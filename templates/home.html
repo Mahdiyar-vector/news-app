@@ -1,8 +1,18 @@
 {% extends 'base.html' %}
+<!-- تگ لوود استتیک برای اتصال به سی اس اس-->
+{% load static %}
 
 {% block title %}Home{% endblock title %}
 
+<!-- برای اتصال به فایل سی اس اس-->
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock extra_head %}
+
+
+
 {% block content %}
+
 {% if user.is_authenticated %}
 <h5>Hi {{ user.username }}! You're {{ user.age }} years old</h5>
 <form method="post" action="{% url 'logout' %}">
@@ -14,4 +24,5 @@
 <a href="{% url 'login' %}">Log in</a> |
 <a href="{% url 'signup' %}">Sign up</a>
 {% endif %}
+
 {% endblock content %}
