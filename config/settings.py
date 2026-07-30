@@ -38,9 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # 3rd Party
-
-
     # local
     'accounts',
     'pages',
@@ -131,9 +128,6 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
-
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 TIME_ZONE = 'Asia/Tehran'
