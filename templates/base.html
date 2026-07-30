@@ -14,10 +14,11 @@
         <a href="{% url 'home' %}">Newspaper</a>
         <ul>
             {% if user.is_authenticated %}
+            <li><a href="{% url 'article_new' %}">+ New</a></li>
             <li>{{ user.username }}</li>
             <li><a href="{% url 'password_change' %}">Change password</a></li>
             <li>
-                <form class="logout-form" method="post" action="{% url 'logout' %}">
+                <form method="post" action="{% url 'logout' %}">
                     {% csrf_token %}
                     <button type="submit">Log Out</button>
                 </form>

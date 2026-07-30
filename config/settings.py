@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-
+from environs import Env
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # local
     'accounts',
     'pages',
+    'articles'
 ]
 
 MIDDLEWARE = [
@@ -121,8 +122,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIR = [str(BASE_DIR.joinpath('static'))]
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [str(BASE_DIR.joinpath('static'))]
 
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -133,3 +134,19 @@ LOGOUT_REDIRECT_URL = 'home'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+TIME_ZONE = 'Asia/Tehran'
+
+
+env = Env()
+env.read_env()
+
+DEBUG = False
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+DEBUG = env.bool("DEBUG")
+DEBUG = env.bool("ANYTHING")
+DEBUG = env.bool("ANYTHING", default=False)
+
+SECRET_KEY = 'yq@=cjw8z@ssx7_3ukfoi9j3di)m-km8=^x9a))p2)3y-24g%*'
+SECRET_KEY = env.str("SECRET_KEY")
