@@ -5,6 +5,13 @@
 {% block content %}
 
 <div>
+
+    <!-- برای کاور مقاله در فایل دیتیل-->
+    {% if object.cover %}
+    <img src="{{ object.cover.url }}" alt="{{ object.title }}">
+    {% endif %}
+    <!-- تا اینجا-->
+
     <h2>{{ object.title }}</h2>
     <p>by {{ object.author }} | {{ object.date }}</p>
     <p>{{ object.body }}</p>

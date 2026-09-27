@@ -14,6 +14,7 @@ class Article(models.Model):
         get_user_model(),
         on_delete=models.CASCADE,
     )
+    cover = models.ImageField(upload_to='covers/', blank=True)
 
     def __str__(self):
         return self.title
@@ -28,7 +29,7 @@ class Comment(models.Model):
     comment = models.CharField(max_length=140)
     author = models.ForeignKey(
         get_user_model(),
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
 
     def __str__(self):

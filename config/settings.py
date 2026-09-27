@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/6.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
-from environs import Env
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -133,14 +133,5 @@ LOGOUT_REDIRECT_URL = 'home'
 TIME_ZONE = 'Asia/Tehran'
 
 
-env = Env()
-env.read_env()
-
-DEBUG = False
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-DEBUG = env.bool("DEBUG")
-DEBUG = env.bool("ANYTHING")
-DEBUG = env.bool("ANYTHING", default=False)
-
-SECRET_KEY = 'yq@=cjw8z@ssx7_3ukfoi9j3di)m-km8=^x9a))p2)3y-24g%*'
-SECRET_KEY = env.str("SECRET_KEY")
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

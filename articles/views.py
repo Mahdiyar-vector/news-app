@@ -3,6 +3,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView, CreateView
 from django.urls import reverse_lazy
 from .models import Article
+
 # Create your views here.
 
 
@@ -13,6 +14,7 @@ class ArticleListView(LoginRequiredMixin, ListView):
 
 class ArticleDetailView(LoginRequiredMixin, DetailView):
     model = Article
+    context_object_name = 'article'
     template_name = 'article_detail.html'
 
 

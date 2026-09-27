@@ -7,6 +7,13 @@
 {% for article in object_list %}
 <div>
     <div>
+
+        <!-- برای کاور مقاله در فایل لیست-->
+        {% if article.cover %}
+        <img src="{{ article.cover.url }}" alt="{{ article.title }}">
+        {% endif %}
+        <!-- تا اینجا-->
+
         <h2>{{ article.title }}</h2>
         <p>by {{ article.author }} | {{ article.date }}</p>
     </div>
