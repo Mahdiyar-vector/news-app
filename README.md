@@ -39,6 +39,8 @@ source .venv/bin/activate
 python -m venv .venv
 .venv\Scripts\activate
 
+
+
 2.Install dependencies:
 pip install -r requirements.txt
 
