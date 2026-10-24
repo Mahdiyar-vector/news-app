@@ -1,12 +1,22 @@
 {% extends 'base.html' %}
+{% load static %}
 
+{% block title %}ویرایش مقاله{% endblock title %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock extra_head %}
 
 {% block content %}
-
-<h1>Edit</h1>
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Update</button>
-</form>
+<div class="article-form-wrapper reveal">
+    <h1>ویرایش مقاله</h1>
+    <div class="article-form-card">
+        <!-- اضافه شدن enctype برای اینکه فرم بتواند عکس کاور را آپلود و ارسال کند -->
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">ذخیره‌ی تغییرات</button>
+        </form>
+    </div>
+</div>
 {% endblock content %}

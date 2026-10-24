@@ -1,36 +1,393 @@
 {% extends 'base.html' %}
-
-<!-- تگ لوود استتیک برای اتصال به سی اس اس-->
 {% load static %}
 
 {% block title %}Home{% endblock title %}
 
-<!-- برای اتصال به فایل سی اس اس-->
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock extra_head %}
 
-
-
 {% block content %}
+<section class="hero-section">
+    <!-- لایه بک‌گراند متحرک -->
+    <div class="hero-background" id="hero-bg-container">
+        <canvas id="dark-veil-canvas"></canvas>
+    </div>
 
-{% if user.is_authenticated %}
-<h5>Hi {{ user.username }}! You're {{ user.age }} years old</h5>
-<form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Log out</button>
-</form>
-{% else %}
-<p>you're not logged in</p>
-<a href="{% url 'login' %}">Log in</a> |
-<a href="{% url 'signup' %}">Sign up</a>
-{% endif %}
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+        <span class="hero-badge">✨ Next-Gen Tech Insights</span>
+        <h1 class="hero-title">Discover the Future of Technology & Innovation</h1>
+        <p class="hero-description">
+            {% if user.is_authenticated %}
+        <h3>خوش آمدید</h3>
+        <strong>{{ user.username }}</strong>
+        عزیز
+        اینجا میتونید اخبار فناوری و مقالات تخصصی رو پیدا کنید
 
 
-<br />
-<div>
-    <h1>Newspaper app</h1>
-    <p>A Newspaper website built with Django.</p>
-    <p><a href="{% url 'article_list' %}" role="button">View All Articles</a></p>
-</div>
+        {% else %}
+        Your daily hub for breaking tech news, deep engineering insights, and cutting-edge digital trends. Explore
+        expert analysis or publish your own articles.
+        {% endif %}
+        </p>
+
+        <div class="hero-cta-group">
+            {% if user.is_authenticated %}
+            <a href="{% url 'article_new' %}" class="btn btn-primary">+ New Article</a>
+            {% else %}
+            <a href="{% url 'signup' %}" class="btn btn-primary">Get Started</a>
+            <a href="{% url 'login' %}" class="btn btn-secondary">Log In</a>
+            {% endif %}
+            <a href="#articles" class="btn btn-secondary">Explore News</a>
+            <a href="{% url 'article_list' %}" class="btn">مشاهده همه مقالات</a>
+        </div>
+    </div>
+</section>
+
+<main class="landing-container">
+
+    <section id="latest-news" class="section slider-section">
+        <div class="section-header">
+            <div>
+                <h2 class="section-title">Latest Breaking News</h2>
+                <p class="section-subtitle">Swipe through top stories shaping the tech industry</p>
+            </div>
+        </div>
+
+        <div class="news-slider-wrapper">
+            <div class="news-slider">
+                <!-- Slide 1 -->
+                <a href="#article-1" class="slide-card">
+                    <img src="{% static 'images/color.png'%}" alt="News Image">
+                    <div class="slide-overlay">
+                        <span class="slide-tag">AI & Robotics</span>
+                        <h3>Generative AI 2.0: The Rise of Autonomous Agents</h3>
+                        <p>How next-gen AI systems are stepping beyond prompts to execute complex workflows.</p>
+                    </div>
+                </a>
+
+                <!-- Slide 2 -->
+                <a href="#article-2" class="slide-card">
+                    <img src="{% static 'images/oldc.png'%}" alt="News Image">
+                    <div class="slide-overlay">
+                        <span class="slide-tag">Hardware</span>
+                        <h3>Quantum Computing Reaches Commercial Feasibility Milestone</h3>
+                        <p>Researchers demonstrate error-free quantum processing for practical cloud workloads.</p>
+                    </div>
+                </a>
+
+                <!-- Slide 3 -->
+                <a href="#article-3" class="slide-card">
+                    <img src="{% static 'images/laptop.png'%}" alt="News Image">
+                    <div class="slide-overlay">
+                        <span class="slide-tag">Web Dev</span>
+                        <h3>WebAssembly and WebGPU Revolutionize In-Browser Apps</h3>
+                        <p>High-performance native apps are moving directly to the web ecosystem.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section><!-- 🔥 Hot & Featured Articles Grid -->
+    <section id="articles" class="section articles-section">
+        <div class="section-header">
+            <div>
+                <h2 class="section-title">Hot & Trending Articles</h2>
+                <p class="section-subtitle">Most read insights by developers and tech leaders</p>
+            </div>
+        </div>
+
+        <div class="articles-grid">
+            <!-- Article 1 -->
+            <article id="article-1" class="article-card">
+                <div class="card-image">
+                    <img src="{% static 'images/bord.png'%}" alt="Cover">
+                    <span class="card-tag">Cybersecurity</span>
+                </div>
+                <div class="card-content">
+                    <div class="card-meta"><span>Sep 02, 2026</span> • <span>5 min read</span></div>
+                    <h3 class="card-title"><a href="#full-article-1">Zero-Trust Architecture in Modern Cloud
+                            Security</a></h3>
+                    <p class="card-excerpt">Why implicit trust is dead and how modern tech enterprises protect
+                        distributed networks.</p>
+                    <div class="card-author">
+                        <div class="author-avatar">F</div>
+                        <div class="author-info">
+                            <span class="author-name">Fatemeh</span>
+                            <span class="author-role">Software Engineer</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 2 -->
+            <article id="article-2" class="article-card">
+                <div class="card-image">
+                    <img src="{% static 'images/zeroone.png'%}" alt="Cover">
+                    <span class="card-tag">Design Systems</span>
+                </div>
+                <div class="card-content">
+                    <div class="card-meta"><span>Sep 01, 2026</span> • <span>4 min read</span></div>
+                    <h3 class="card-title"><a href="#full-article-2">Designing Accessible Micro-Interactions in
+                            Figma</a></h3>
+                    <p class="card-excerpt">Enhancing user experience using subtle UI motions without breaking web
+                        accessibility standards.</p>
+                    <div class="card-author">
+                        <div class="author-avatar">M</div>
+                        <div class="author-info">
+                            <span class="author-name">Mohammad</span>
+                            <span class="author-role">Product Designer</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Article 3 -->
+            <article id="article-3" class="article-card">
+                <div class="card-image">
+                    <img src="{% static 'images/data.png'%}" alt="Cover">
+                    <span class="card-tag">DevOps</span>
+                </div>
+                <div class="card-content">
+                    <div class="card-meta"><span>Aug 28, 2026</span> • <span>6 min read</span></div>
+                    <h3 class="card-title"><a href="#full-article-3">The Evolution of Microservices to Serverless
+                            Edge</a></h3>
+                    <p class="card-excerpt">Reducing latency and operational costs by moving backend logic closer to
+                        end-users.</p>
+                    <div class="card-author">
+                        <div class="author-avatar">A</div>
+                        <div class="author-info">
+                            <span class="author-name">Alex Reed</span>
+                            <span class="author-role">Cloud Architect</span>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section><!-- 📊 Stats & Impact Section -->
+    <section class="section stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>150K+</h3>
+                <p>Monthly Readers</p>
+            </div>
+            <div class="stat-card">
+                <h3>1.2K+</h3>
+                <p>Published Articles</p>
+            </div>
+            <div class="stat-card">
+                <h3>85+</h3>
+                <p>Expert Authors</p>
+            </div>
+            <div class="stat-card">
+                <h3>99.9%</h3>
+                <p>Accuracy & Credibility</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ✍️ Top Authors Section -->
+    <section class="section authors-section">
+        <h2 class="section-title">Top Contributing Authors</h2>
+        <div class="authors-grid">
+            <div class="author-profile-card">
+                <div class="profile-avatar">F</div>
+                <h3>Fatemeh S.</h3>
+                <p class="profile-bio">Computer Engineer & Frontend Developer</p>
+                <span class="article-count">34 Articles</span>
+            </div>
+            <div class="author-profile-card">
+                <div class="profile-avatar">M</div>
+                <h3>Mohammad R.</h3>
+                <p class="profile-bio">UI/UX Specialist & Product Strategist</p>
+                <span class="article-count">28 Articles</span>
+            </div>
+            <div class="author-profile-card">
+                <div class="profile-avatar">A</div>
+                <h3>Alex Reed</h3>
+                <p class="profile-bio">AI & Data Science Researcher</p>
+                <span class="article-count">19 Articles</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 📬 Newsletter Section -->
+    <section id="newsletter" class="section newsletter-section">
+        <div class="newsletter-card">
+            <h2>Stay Ahead in the Tech World</h2>
+            <p>Get handpicked technology updates and breaking news delivered straight to your inbox every week.</p>
+            <form class="newsletter-form" onsubmit="event.preventDefault();">
+                <div class="newsletter-input-group">
+                    <input type="email" placeholder="Enter your email address" required>
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+
+
+</main>
+
+<footer class="site-footer">
+    <div class="footer-container">
+        <div class="footer-col footer-about">
+            <h3 class="footer-logo">Newspaper Tech</h3>
+            <p>Your premier portal for verified technology news, software development trends, and engineering research.
+            </p>
+        </div>
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#latest-news">Latest News</a></li>
+                <li><a href="#articles">Articles</a></li>
+                <li><a href="#newsletter">Newsletter</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Topics</h4>
+            <ul>
+                <li><a href="#">Artificial Intelligence</a></li>
+                <li><a href="#">Web Development</a></li>
+                <li><a href="#">Cybersecurity</a></li>
+                <li><a href="#">Cloud & DevOps</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Connect</h4>
+            <div class="social-links">
+                <a href="#" class="social-btn">GitHub</a>
+                <a href="#" class="social-btn">LinkedIn</a>
+                <a href="#" class="social-btn">X</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Newspaper Portal. Built for high-performance Tech Media.</p>
+        <p>built by f</p>
+    </div>
+</footer>
+
+<script>
+    const canvas = document.getElementById('dark-veil-canvas');
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+
+        const mouse = {
+            x: null,
+            y: null,
+            radius: 180
+        };
+
+        function resize() {
+            width = canvas.width = canvas.offsetWidth;
+            height = canvas.height = canvas.offsetHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        const heroSection = document.querySelector('.hero-section');
+        if (heroSection) {
+            heroSection.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                mouse.x = e.clientX - rect.left;
+                mouse.y = e.clientY - rect.top;
+            });
+
+            heroSection.addEventListener('mouseleave', () => {
+                mouse.x = null;
+                mouse.y = null;
+            });
+        }
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.size = Math.random() * 120 + 40;
+                this.speedX = (Math.random() - 0.5) * 0.6;
+                this.speedY = (Math.random() - 0.5) * 0.6;
+                this.alpha = Math.random() * 0.25 + 0.1;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < -100 || this.x > width + 100 || this.y < -100 || this.y > height + 100) {
+                    this.reset();
+                }
+
+                if (mouse.x !== null && mouse.y !== null) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < mouse.radius) {
+                        const forceDirectionX = dx / distance;
+                        const forceDirectionY = dy / distance;
+                        const maxDistance = mouse.radius;
+                        const force = (maxDistance - distance) / maxDistance;
+                        const directionX = forceDirectionX * force * 5;
+                        const directionY = forceDirectionY * force * 5;
+
+                        this.x -= directionX;
+                        this.y -= directionY;
+                    }
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.beginPath();
+                let gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+
+                let currentAlpha = this.alpha;
+                if (mouse.x !== null && mouse.y !== null) {
+                    let dx = mouse.x - this.x; let dy = mouse.y - this.y;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < mouse.radius) {
+                        currentAlpha = Math.min(0.5, this.alpha + 0.2);
+                    }
+                }
+                gradient.addColorStop(0, `rgba(167, 170, 99, ${currentAlpha})`);
+                gradient.addColorStop(1, 'rgba(18, 26, 27, 0)');
+                ctx.fillStyle = gradient;
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < 30; i++) {
+            particles.put ? particles.push(new Particle()) : particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.fillStyle = '#121a1b';
+            ctx.fillRect(0, 0, width, height);
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    }
+</script>
 {% endblock content %}

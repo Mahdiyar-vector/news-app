@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --bg: #eae6d2;
+    /* پس‌زمینه اصلی روشن و نرم */
+    --surface: #ffffff;
+    /* سطوح و کارت‌های سفید شفاف */
+    --accent: #a7aa63;
+    /* رنگ شاخص زیتونی روشن */
+    --accent-dark: #3d402d;
+    /* زیتونی تیره برای هاور و متن‌های برجسته */
+    --text: #121a1b;
+    /* متن‌های اصلی با کنتراست بالا */
+    --text-dim: #505039;
+    /* متن‌های ثانویه و توضیحات */
+    --glass: rgba(255, 255, 255, 0.65);
+    /* افکت شیشه‌ای روشن */
+    --glass-border: rgba(80, 80, 57, 0.15);
+    /* بوردر نرم زیتونی */
+    --shadow-soft: 0 10px 30px rgba(18, 26, 27, 0.08);
+}
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+    list-style: none;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse 900px 500px at 50% -10%, rgba(167, 170, 99, 0.25), transparent 70%),
+        var(--bg);
+    color: var(--text);
+    font-size: 16.5px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* ---------- NAV (منوی بالای صفحه) ---------- */
+nav {
+    position: sticky;
+    top: 16px;
+    width: calc(100% - 40px);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: var(--shadow-soft);
+    z-index: 200;
+}
+
+nav>a {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.5px;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+nav>a::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px rgba(167, 170, 99, 0.6);
+}
+
+nav>a:hover {
+    color: var(--accent-dark);
+}
+
+nav ul {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* دکمه‌ی + New Article در هدر */
+.nav-new {
+    padding: 9px 20px;
+    border-radius: 10px;
+    background: var(--text);
+    color: var(--bg);
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.25s ease;
+}
+
+.nav-new:hover {
+    background: var(--accent-dark);
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(80, 80, 57, 0.25);
+    transform: translateY(-2px);
+}
+
+/* ---------- منوی آبشاری کاربر (User Menu Dropdown) ---------- */
+.user-menu {
+    position: relative;
+}
+
+.user-menu-trigger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    cursor: pointer;
+    color: var(--text);
+    font-size: 15px;
+    background: rgba(255, 255, 255, 0.6);
+    transition: all 0.25s ease;
+}
+
+.user-menu-trigger:hover,
+.user-menu.open .user-menu-trigger {
+    border-color: var(--accent-dark);
+    color: var(--accent-dark);
+    background: #ffffff;
+}
+
+.user-menu-trigger .chevron {
+    transition: transform 0.3s ease;
+    font-size: 11px;
+}
+
+.user-menu.open .chevron {
+    transform: rotate(180deg);
+}
+
+.user-menu-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    min-width: 220px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 8px;
+    box-shadow: 0 15px 35px rgba(18, 26, 27, 0.12);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: all 0.25s ease;
+    z-index: 300;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.user-menu.open .user-menu-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.user-menu-dropdown li {
+    width: 100%;
+}
+
+.user-menu-dropdown a,
+.user-menu-dropdown button {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.user-menu-dropdown a:hover,
+.user-menu-dropdown button:hover {
+    background: rgba(167, 170, 99, 0.15);
+    color: var(--text);
+}
+
+.user-menu-dropdown form {
+    margin: 0;
+    width: 100%;
+}
+
+.user-menu-dropdown .logout-item button {
+    color: #c0563f;
+}
+
+.user-menu-dropdown .logout-item button:hover {
+    background: rgba(192, 86, 63, 0.08);
+    color: #a33e28;
+}
+
+.user-menu-dropdown a.signup-link {
+    color: var(--accent-dark);
+    font-weight: 600;
+}
+
+/* ---------- بدنه اصلی (Main) ---------- */
+main {
+    flex: 1;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+}
+
+/* واکنش‌گرایی منو در موبایل */
+@media (max-width: 768px) {
+    nav {
+        padding: 14px 20px;
+    }
+
+    nav ul {
+        gap: 8px;
+    }
+}

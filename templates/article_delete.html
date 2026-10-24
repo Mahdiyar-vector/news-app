@@ -1,11 +1,22 @@
 {% extends 'base.html' %}
+{% load static %}
 
+{% block title %}Delete Article{% endblock title %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock extra_head %}
 
 {% block content %}
-<h1>Delete</h1>
-<form method="post" action="">
-    {% csrf_token %}
-    <p>Are you sure you want to delete "{{ article.title }}"</p>
-    <button type="submit">Confirm</button>
-</form>
+<div class="delete-wrapper reveal">
+    <div class="delete-card">
+        <h1>حذف مقاله</h1>
+        <p>مطمئنی می‌خوای «{{ article.title }}» رو حذف کنی؟ این کار قابل بازگشت نیست.</p>
+        <form method="post" action="">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">بله، حذف کن</button>
+            <a href="{% url 'article_list' %}" class="btn btn-ghost">انصراف</a>
+        </form>
+    </div>
+</div>
 {% endblock content %}

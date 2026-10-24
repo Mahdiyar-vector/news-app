@@ -1,10 +1,21 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %}نوشتن مقاله‌ی جدید{% endblock title %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock extra_head %}
 
 {% block content %}
-<h1>New article</h1>
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
-</form>
+<div class="article-form-wrapper">
+    <h1>نوشتن مقاله‌ی جدید</h1>
+    <div class="article-form-card">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">انتشار مقاله</button>
+        </form>
+    </div>
+</div>
 {% endblock content %}

@@ -1,12 +1,120 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Sign up{% endblock title %}
+{% block title %}Sign Up / Login{% endblock title %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>{% endblock extra_head %}
 
 {% block content %}
-<h2>sign up</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p}}
-    <button type="submit">Sign up</button>
-</form>
+<div class="container active" id="auth-container">
+
+    <div class="form-box login">
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <h1>Login</h1>
+
+            <div class="input-box">
+                <input type="text" name="username" placeholder="Username" required>
+                <i class='bx bxs-user'></i>
+            </div>
+
+            <div class="input-box">
+                <input type="password" name="password" placeholder="Password" required>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+
+            <div class="forgot-link">
+                <a href="{% url 'password_reset' %}">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="btn">Log In</button>
+
+            <p class="social-intro">or login with social platforms</p>
+            <div class="social-icons">
+                <a href="#"><i class='bx bxl-google'></i></a>
+                <a href="#"><i class='bx bxl-facebook'></i></a>
+                <a href="#"><i class='bx bxl-github'></i></a>
+                <a href="#"><i class='bx bxl-linkedin'></i></a>
+            </div>
+        </form>
+    </div>
+
+    <div class="form-box register">
+        <form method="post" action="{% url 'signup' %}">
+            {% csrf_token %}
+            <h1>Registration</h1>
+
+            {% if form.errors %}
+            <div class="form-error-list">
+                {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                <p>• {{ error }}</p>
+                {% endfor %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="input-box">
+                <input type="text" name="{{ form.username.name }}" placeholder="Username"
+                    value="{{ form.username.value|default:'' }}" required>
+                <i class='bx bxs-user'></i>
+            </div>
+
+            <div class="input-box">
+                <input type="email" name="{{ form.email.name }}" placeholder="Email"
+                    value="{{ form.email.value|default:'' }}" required>
+                <i class='bx bxs-envelope'></i>
+            </div>
+
+            {% if form.age %}
+            <div class="input-box">
+                <input type="number" name="{{ form.age.name }}" placeholder="Age"
+                    value="{{ form.age.value|default:'' }}">
+                <i class='bx bxs-calendar'></i>
+            </div>
+            {% endif %}
+
+            <div class="input-box">
+                <input type="password" name="{{ form.password1.name }}" placeholder="Password" required>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+
+            <div class="input-box">
+                <input type="password" name="{{ form.password2.name }}" placeholder="Confirm Password" required>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+
+            <button type="submit" class="btn">Register</button>
+        </form>
+    </div>
+
+    <div class="toggle-box">
+        <div class="toggle-panel toggle-left">
+            <h1>Hello, Welcome!</h1>
+            <p>Don't have an account?</p>
+            <button class="btn register-btn" type="button">Register</button>
+        </div>
+
+        <div class="toggle-panel toggle-right">
+            <h1>Welcome Back!</h1>
+            <p>Already have an account?</p>
+            <button class="btn login-btn" type="button">Login</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.getElementById('auth-container');
+        const registerBtn = document.querySelector('.register-btn');
+        const loginBtn = document.querySelector('.login-btn');
+
+        if (registerBtn && loginBtn && container) {
+            registerBtn.addEventListener('click', () => container.classList.add('active'));
+            loginBtn.addEventListener('click', () => container.classList.remove('active'));
+        }
+    });
+</script>
 {% endblock content %}

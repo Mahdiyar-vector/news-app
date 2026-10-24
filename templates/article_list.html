@@ -1,39 +1,126 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Articles{% endblock title %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock extra_head %}
+
 {% block content %}
 
-{% for article in object_list %}
-<div>
-    <div>
+<section class="hero reveal" style="padding-bottom: 20px; text-align: center;">
+    <br>
+    <br>
+    <h1>مقالات <span>ما</span></h1>
+    <p>
+        آخرین نوشته‌ها رو اینجا پیدا می‌کنی
 
-        <!-- برای کاور مقاله در فایل لیست-->
-        {% if article.cover %}
-        <img src="{{ article.cover.url }}" alt="{{ article.title }}">
+    </p>
+</section>
+
+<div class="landing-container" style="padding-top: 10px; max-width: 1100px; margin: 0 auto;">
+    {% if object_list %}
+    {% for article in object_list %}
+    {% if forloop.first %}
+
+    <div class="featured-article reveal" style="margin-bottom: 40px;">
+        <div class="featured-card"
+            style="display: flex; flex-direction: row; align-items: stretch; background: rgba(255, 255, 255, 0.75); border: 1px solid var(--glass-border); border-radius: 24px; overflow: hidden; backdrop-filter: blur(16px); box-shadow: var(--shadow-soft);">
+            <div class="featured-accent"
+                style="width: 8px; background: linear-gradient(180deg, var(--accent), var(--accent-dark)); flex-shrink: 0;">
+            </div>
+
+            {% if article.cover %}
+            <div class="featured-cover" style="width: 40%; min-width: 280px; overflow: hidden; background: #121a1b;">
+                <img src="{{ article.cover.url }}" alt="{{ article.title }}"
+                    style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            </div>
+            {% endif %}
+
+            <div class="featured-body"
+                style="padding: 36px 40px; flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                <span class="featured-tag"
+                    style="display: inline-block; font-size: 12px; font-weight: 700; color: var(--accent-dark); text-transform: uppercase; margin-bottom: 12px;">آخرین
+                    مقاله</span>
+                <h2 style="font-size: 26px; margin-bottom: 12px;"><a href="{% url 'article_detail' article.pk %}"
+                        style="color: var(--text); text-decoration: none;">{{ article.title }}</a></h2>
+                <p class="featured-meta" style="font-size: 14px; color: var(--text-dim); margin-bottom: 14px;">نویسنده:
+                    {{ article.author }} &middot; {{ article.date }}</p>
+                <p class="featured-excerpt"
+                    style="color: var(--text-dim); line-height: 1.8; font-size: 15px; margin-bottom: 20px;">{{
+                    article.body|truncatewords:35 }}</p>
+
+                {% if user == article.author %}
+                <div class="article-actions" style="display: flex; gap: 10px;">
+                    <a href="{% url 'article_edit' article.pk %}"
+                        style="padding: 6px 14px; border-radius: 8px; border: 1px solid var(--glass-border); color: var(--text-dim); background: rgba(255, 255, 255, 0.5); font-size: 13.5px; font-weight: 600;">ویرایش</a>
+                    <a href="{% url 'article_delete' article.pk %}" class="delete-link"
+                        style="padding: 6px 14px; border-radius: 8px; border: 1px solid var(--glass-border); color: #c0563f; background: rgba(255, 255, 255, 0.5); font-size: 13.5px; font-weight: 600;">حذف</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if object_list|length > 1 %}
+    <div class="section-heading reveal" style="margin: 30px 0 20px 0;">
+        <h3 style="font-size: 22px; font-weight: 600; color: var(--text);">بقیه‌ی مقالات</h3>
+    </div>
+    <div class="articles-grid"
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; margin-bottom: 60px;">
+        {% endif %}{% else %}
+        <!-- سایر مقالات به صورت کارت‌های گرید مرتب -->
+        <div class="article-card reveal">
+            <div class="card-image">
+                {% if article.cover %}
+                <img src="{{ article.cover.url }}" alt="{{ article.title }}">
+                {% else %}
+                <div
+                    style="display: flex; align-items: center; justify-content: center; height: 100%; background: linear-gradient(135deg, rgba(167, 170, 99, 0.25), rgba(234, 230, 210, 0.6)); font-size: 32px; font-weight: bold; color: var(--text);">
+                    {{ article.title|slice:":1"|upper }}
+                </div>
+                {% endif %}
+                <span class="card-tag">Article</span>
+            </div>
+
+            <div class="card-content">
+                <div class="card-meta"><span>{{ article.date }}</span></div>
+                <h3 class="card-title"><a href="{% url 'article_detail' article.pk %}">{{ article.title }}</a></h3>
+                <p class="card-excerpt">{{ article.body|truncatewords:20 }}</p>
+
+                <div class="card-author" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div class="author-avatar">{{ article.author.username|slice:":1"|upper }}</div>
+                        <div class="author-info">
+                            <span class="author-name">{{ article.author.username }}</span>
+                        </div>
+                    </div>
+
+                    {% if user == article.author %}
+                    <div class="article-actions" style="border-top: none; padding-top: 0;">
+                        <a href="{% url 'article_edit' article.pk %}">ویرایش</a>
+                        <a href="{% url 'article_delete' article.pk %}" class="delete-link">حذف</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
         {% endif %}
-        <!-- تا اینجا-->
-
-        <h2>{{ article.title }}</h2>
-        <p>by {{ article.author }} | {{ article.date }}</p>
-    </div>
-    <div>
-        <p>{{ article.body }}</p>
-        <a href="{% url 'article_edit' article.pk %}">Edit</a> |
-        <a href="{% url 'article_delete' article.pk %}">Delete</a>
-    </div>
-
-
-    <div>
-        {% for comment in article.comments.all %}
-        <p>
-            <span>{{ comment.author }}: </span>
-            {{ comment }}
-        </p>
         {% endfor %}
-    </div>
-</div>
 
-{% endfor %}
+        {% if object_list|length > 1 %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="empty-state reveal">
+        <p>هنوز مقاله‌ای منتشر نشده است.</p>
+        {% if user.is_authenticated %}
+        <p style="margin-top: 16px;"><a href="{% url 'article_new' %}" class="btn">اولین مقاله رو بنویس</a></p>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
 
 {% endblock content %}

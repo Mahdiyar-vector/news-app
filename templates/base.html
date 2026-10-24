@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block extra_head %}{% endblock extra_head %}
     <title>{% block title %}Newspaper App{% endblock title %}</title>
 </head>
 
@@ -14,25 +15,79 @@
         <a href="{% url 'home' %}">Newspaper</a>
         <ul>
             {% if user.is_authenticated %}
-            <li><a href="{% url 'article_new' %}">+ New</a></li>
-            <li>{{ user.username }}</li>
-            <li><a href="{% url 'password_change' %}">Change password</a></li>
-            <li>
-                <form method="post" action="{% url 'logout' %}">
-                    {% csrf_token %}
-                    <button type="submit">Log Out</button>
-                </form>
+            <li><a href="{% url 'article_new' %}" class="nav-new">+ New Article</a></li>
+            <li class="user-menu" id="userMenu">
+                <div class="user-menu-trigger" id="userMenuTrigger">
+                    {{ user.username }}
+                    <span class="chevron">▾</span>
+                </div>
+                <ul class="user-menu-dropdown">
+                    <li><a href="{% url 'password_change' %}">Change password</a></li>
+                    <li class="logout-item">
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit">Log Out</button>
+                        </form>
+                    </li>
+                </ul>
             </li>
             {% else %}
-            <li><a href="{% url 'login' %}">Log In</a></li>
-            <li><a href="{% url 'signup' %}">Sign up</a></li>
+            <li class="user-menu" id="userMenu">
+                <div class="user-menu-trigger" id="userMenuTrigger">
+                    Menu
+                    <span class="chevron">▾</span>
+                </div>
+                <ul class="user-menu-dropdown">
+                    <li><a href="{% url 'login' %}">Log In</a></li>
+                    <li><a href="{% url 'signup' %}" class="signup-link">Sign up</a></li>
+                </ul>
+            </li>
             {% endif %}
         </ul>
     </nav>
+
     <main>
         {% block content %}
         {% endblock content %}
     </main>
+
+    {% block extra_js %}{% endblock extra_js %}
+
+    <script>
+        // User menu toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const userMenu = document.getElementById('userMenu');
+            const trigger = document.getElementById('userMenuTrigger');
+
+            if (trigger && userMenu) {
+                trigger.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    userMenu.classList.toggle('open');
+                });
+
+                document.addEventListener('click', (e) => {
+                    if (!userMenu.contains(e.target)) {
+                        userMenu.classList.remove('open');
+                    }
+                });
+            }
+
+            // animation for elements with the class "reveal"           
+            const revealEls = document.querySelectorAll('.reveal');
+            if (revealEls.length) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('in-view');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.15 });
+
+                revealEls.forEach(el => observer.observe(el));
+            }
+        });
+    </script>
 </body>
 
 </html>

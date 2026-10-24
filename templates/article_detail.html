@@ -1,26 +1,48 @@
 {% extends 'base.html' %}
+{% load static %}
 
+{% block title %}{{ object.title }}{% endblock title %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock extra_head %}
 
 {% block content %}
+<article class="article-detail reveal">
 
-<div>
-
-    <!-- برای کاور مقاله در فایل دیتیل-->
+    <!-- بخش جدید: نمایش کاور مقاله در صورت وجود -->
     {% if object.cover %}
-    <img src="{{ object.cover.url }}" alt="{{ object.title }}">
+    <div class="article-cover" style="margin-bottom: 24px; text-align: center;">
+        <img src="{{ object.cover.url }}" alt="{{ object.title }}"
+            style="max-width: 100%; height: auto; border-radius: 12px; object-fit: cover;">
+    </div>
     {% endif %}
-    <!-- تا اینجا-->
 
-    <h2>{{ object.title }}</h2>
-    <p>by {{ object.author }} | {{ object.date }}</p>
-    <p>{{ object.body }}</p>
-</div>
+    <p class="article-meta">نویسنده: {{ object.author }} &middot; {{ object.date }}</p>
+    <h1>{{ object.title }}</h1>
+    <div class="article-body">{{ object.body }}</div>
 
-<p>
-    <a href="{% url 'article_edit' article.pk %}">Edit</a> |
-    <a href="{% url 'article_delete' article.pk %}">Delete</a>
-</p>
-<p>Back to<a href="{% url 'article_list' %}"> all articles</a></p>
+    <!-- شرط دسترسی فقط برای نویسنده مقاله -->
+    {% if user == object.author %}
+    <div class="article-detail-actions">
+        <a href="{% url 'article_edit' object.pk %}" class="btn btn-ghost">ویرایش</a>
+        <a href="{% url 'article_delete' object.pk %}" class="btn btn-danger">حذف</a>
+    </div>
+    {% endif %}
 
+    <!-- بخش کامنت‌ها -->
+    {% if object.comments.all %}
+    <div class="section-heading" style="max-width: none; padding: 0; margin-top: 40px;">
+        <h3>نظرات</h3>
+    </div>
+    {% for comment in object.comments.all %}
+    <div class="article-card" style="margin-bottom: 14px;">
+        <p class="article-meta">{{ comment.author }}</p>
+        <p class="article-excerpt" style="-webkit-line-clamp: unset; line-clamp: unset;">{{ comment }}</p>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <a href="{% url 'article_list' %}" class="back-to-list">← بازگشت به همه‌ی مقالات</a>
+</article>
 {% endblock content %}
